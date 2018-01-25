@@ -1,3 +1,127 @@
 .my-react-component {
   font-family: Arial;
 }
+
+.alert, .popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 10px 5px;
+  font-family: 'Futura-CondensedMedium';
+  font-size: 20px;
+  background-color: red;
+  color: white;
+  z-index: 9;
+  display: none;
+}
+.alert.active, .popup.active {
+  display: block;
+}
+.popup {
+  background-color: black;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+  /* background-image: url("./assets/images/bg-call-center.jpg"); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 100vw;
+  height: 100vh;
+}
+
+.remote-desktop {
+  position: absolute;
+  top: 20.53%;
+  left: 4.07%;
+  width: 68.36%;
+  height: 48.44%;
+
+  transition: all .5s linear;
+}
+
+.remote-desktop.active {
+  width: 91.88%;
+  height: 65.10%;
+}
+
+.video-call-panel {
+  position: absolute;
+  top: 19.94%;
+  left: 74.28%;
+  width: 22.42%;
+  height: 49.41%;
+
+  /* background-image: url("./assets/images/bg-video-callcenter.png"); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  transition: all .5s linear;
+}
+
+.video-call-panel.active{
+  transform: translateX(121.95%);
+}
+
+.upper-video {
+  position: absolute;
+  top: 4.95%;
+  left: 5.24%;
+  width: 88.85%;
+  height: 31.62%;
+}
+
+.lower-video {
+  position: absolute;
+  top: 49.50%;
+  left: 5.24%;
+  width: 200px;
+  height: 268px;
+  /* width: 88.85%; */
+  /* height: 31.62%; */
+}
+
+.end-call-button, .accept-button {
+  position: absolute;
+  top: 83%;
+  left: 50%;
+  width: 80.14%;
+  height: 11.86%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  border: 0px;
+  padding: 0px;
+
+  background: transparent;
+  /* background-image: url("./assets/images/btn-hangup.png"); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: none
+}
+.accept-button {
+  /* background-image: url("./assets/images/btn-pickup.png"); */
+}
+
+.end-call-button.active, .accept-button.active {
+  display: block;
+}
+
+.videocall-show-button, .videocall-hide-button {
+  position: absolute;
+  top: 13.20%;
+  right: 3.52%;
+  cursor: pointer;
+  border: 0px;
+  padding: 0px;
+  background: transparent;
+}
+
+.videocall-show-button {
+  display: none;
+}
+
+.videocall-show-button:focus, .videocall-hide-button:focus, .end-call-button:focus {
+  outline: none;
+}

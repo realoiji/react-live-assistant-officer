@@ -8,3 +8,5 @@ rules:
   space-before-function-paren: off
 globals:
   React: false
+  FormData: true
+  URL: true

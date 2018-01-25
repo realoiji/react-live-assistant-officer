@@ -29,6 +29,10 @@ module.exports = {
       {
         test: /\.(woff2?|ttf|eot|svg|jpg|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'url-loader?limit=10000'
+      },
+      {
+        test: /\.(mp3|mp4)$/,
+        loader: 'file-loader'
       }
     ]
   },

@@ -1,7 +1,7 @@
 {
-  "name": "react-component-npm-package-boilerplate",
+  "name": "react-live-assistant-officer",
   "version": "0.1.0",
-  "description": "React boilerplate easy to create npm package react component",
+  "description": "live assistant system for officer",
   "main": "lib/index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",
@@ -64,5 +64,12 @@
     "url-loader": "^0.5.9",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "file-loader": "^1.1.6",
+    "moment": "^2.20.1",
+    "peerjs": "^0.3.14",
+    "recordrtc": "^5.4.6",
+    "socket.io-client": "^2.0.4"
   }
 }
