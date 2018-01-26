@@ -1,6 +1,6 @@
 {
   "name": "react-live-assistant-officer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "live assistant system for officer",
   "main": "lib/index.js",
   "scripts": {
@@ -12,27 +12,24 @@
     "build": "npm run clean && babel src --out-dir lib",
     "prepublish": "npm run build"
   },
-  "author": "Thawatchai Kuansombat (thawatchai.deartk@gmail.com)",
+  "author": "Prach meesumlit (bombom.55@hotmail.com)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GA-MO/react-component-npm-package-boilerplate.git"
+    "url": "https://github.com/realoiji/react-live-assistant-officer.git"
   },
   "bugs": {
-    "url": "https://github.com/GA-MO/react-component-npm-package-boilerplate/issues"
+    "url": "https://github.com/realoiji/react-live-assistant-officer/issues"
   },
-  "homepage": "https://github.com/GA-MO/react-component-npm-package-boilerplate",
+  "homepage": "https://github.com/realoiji/react-live-assistant-officer",
   "keywords": [
-    "react-component",
-    "react-component-npm",
-    "react-component-npm-package",
-    "react-component-npm-package-boilerplate",
-    "react"
+    "react-live-assistant",
+    "react-video-call",
+    "react-live-assistant-officer",
+    "react-live-assistant-video-call"
   ],
   "files": [
-    "lib",
-    "css/style.css",
-    "configs"
+    "lib"
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",

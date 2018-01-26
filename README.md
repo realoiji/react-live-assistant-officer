@@ -10,7 +10,7 @@ $ const VideoCall = require('react-live-assistant-officer')
 
 ### How to use
 Insert this code in render
-```
+```JSX
 <VideoCall
   onHangUp={this.handleHangUp}
   onErrors={this.handleError}
@@ -43,6 +43,8 @@ Insert this code in render
   }}
 />
 ```
+CSS stylesheet \
+[css/style.css](css/style.css)
 
 ### Option
 
@@ -62,13 +64,7 @@ Insert this code in render
 | audio | boolean | true for enable audio |
 | delayAutoHangUp | number | set time when not missed call, auto hangup  |
 | delayAfterDisConnect | number | set delay time after hangup |
-| server | object | config for call
-- ip: 1
-- port: 9000
-- path: /peerjs
-- debug: 3
-- protocol: http
-|
+| server | object | config for call <br> ip: 1 <br>port: 9000 <br>path: /peerjs <br>debug: 3 <br>protocol: http|
 | videoUI | function | custom UI |
 
 
