@@ -29,7 +29,10 @@
     "react-live-assistant-video-call"
   ],
   "files": [
-    "lib"
+    "lib",
+    "audios",
+    "css",
+    "images"
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
