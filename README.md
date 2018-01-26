@@ -5,7 +5,7 @@ React Live Assistant For Officer
 ### Getting Started
 ```
 $ npm install react-live-assistant-officer
-$ const VideoCall from 'react-live-assistant-officer'
+$ const VideoCall = require('react-live-assistant-officer')
 ```
 
 ### How to use
