@@ -245,7 +245,7 @@ export default class VideoCall extends PureComponent {
     const myVideo = () => <video ref={c => { this.myVideoRef = c }} className='upper-video' src={myVideoUrl} muted autoPlay />
     const theirVideo = () => <video ref={c => { this.theirVideoRef = c }} className='lower-video' src={theirVideoUrl} autoPlay poster={profileImg} />
 
-    return (<div ref={c => { this.videoContainer = c }}>
+    return (<div ref={c => { this.videoContainer = c }} className='video-call-container'>
       {this.props.videoUI(myVideo, theirVideo, this.handleHangUp, this.handleAccept, inComingCall, talking)}
       <audio ref={c => { this.audioRef = c }} className='audio' loop autoPlay><source src={audio} type='audio/mpeg' /></audio>
     </div>)
