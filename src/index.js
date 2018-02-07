@@ -21,6 +21,7 @@ export default class VideoCall extends PureComponent {
     videoWidth: PropTypes.number.isRequired,
     videoHeight: PropTypes.number.isRequired,
     audio: PropTypes.bool.isRequired,
+    onlineStatus: PropTypes.bool.isRequired,
     onInComing: PropTypes.func,
     onReload: PropTypes.func,
     onErrors: PropTypes.func,
@@ -60,12 +61,14 @@ export default class VideoCall extends PureComponent {
       myVideoStream: '',
       theirVideoStream: '',
       peer: null,
+      socket: null,
       error: false,
       audio: '',
       touchScreenId: null,
       talking: false,
       inComingCall: false
     }))
+    if (this.props.onlineStatus) this.connectSocket()
     setTimeout(() => {
       this.props.onReload(true)
     }, this.props.delayAfterDisConnect * 1000)
@@ -75,7 +78,10 @@ export default class VideoCall extends PureComponent {
     const { myVideoStream, peer, socket } = this.state
     try {
       if (myVideoStream) myVideoStream.getTracks().forEach(mediaTrack => mediaTrack.stop())
-      if (socket) socket.emit('changestatus', 'ready')
+      if (socket) {
+        socket.emit('changestatus', 'ready')
+        socket.disconnect()
+      }
       if (peer) peer.destroy()
       // ipcRenderer.send('statusForWindow', 'hide')
       this.audioReload(busyAudio)
@@ -226,8 +232,7 @@ export default class VideoCall extends PureComponent {
       if (nextProps.onlineStatus) {
         this.connectSocket()
       } else {
-        this.state.socket.disconnect()
-        this.handlePeerClose()
+        this.destroy()
       }
     }
     if (zone !== nextProps.zone) {
@@ -236,7 +241,7 @@ export default class VideoCall extends PureComponent {
     }
   }
 
-  componentWillUnMount() { this.destroy() }
+  componentWillUnmount() { this.destroy() }
 
   render() {
     const { myVideoStream, theirVideoStream, audio, inComingCall, talking } = this.state
