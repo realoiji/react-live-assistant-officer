@@ -7,6 +7,7 @@ import profileImg from '../images/profile.png'
 import busyAudio from '../audios/busy.mp3'
 import incomingAudio from '../audios/incoming.mp3'
 export default class VideoCall extends PureComponent {
+  checkTalkingTimeOut = false
   static propTypes = {
     id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -28,7 +29,8 @@ export default class VideoCall extends PureComponent {
     onHangUp: PropTypes.func,
     videoUI: PropTypes.func,
     delayAutoHangUp: PropTypes.number.isRequired,
-    delayAfterDisConnect: PropTypes.number.isRequired
+    delayAfterDisConnect: PropTypes.number.isRequired,
+    onlineStatus: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -44,9 +46,9 @@ export default class VideoCall extends PureComponent {
     peer: null,
     error: false,
     audio: '',
-    touchScreenId: null,
-    talking: false,
-    inComingCall: false
+    touchScreenId: null, // id 2
+    inComingCall: false, // true
+    talking: false
   }
 
   configMedia = () => {
@@ -66,9 +68,10 @@ export default class VideoCall extends PureComponent {
       talking: false,
       inComingCall: false
     }))
-    setTimeout(() => {
-      this.props.onReload(true)
-    }, this.props.delayAfterDisConnect * 1000)
+    // setTimeout(() => {
+    // console.log('reload')
+    this.props.onReload(true)
+    // }, this.props.delayAfterDisConnect * 1000)
   }
 
   destroy = () => {
@@ -76,11 +79,16 @@ export default class VideoCall extends PureComponent {
     try {
       if (myVideoStream) myVideoStream.getTracks().forEach(mediaTrack => mediaTrack.stop())
       if (socket) socket.emit('changestatus', 'ready')
-      if (peer) peer.destroy()
-      // ipcRenderer.send('statusForWindow', 'hide')
+      if (peer) {
+        peer.destroy()
+      }
       this.audioReload(busyAudio)
-      this.resetConnection()
+      if (this.checkTalkingTimeOut) {
+        clearTimeout(this.checkTalkingTimeOut)
+      }
+      // ipcRenderer.send('statusForWindow', 'hide')
     } catch (error) {
+      // console.log('error', error)
       this.resetConnection()
     }
   }
@@ -106,11 +114,16 @@ export default class VideoCall extends PureComponent {
   handleHangUp = () => {
     // const { delayAfterDisConnect } = this.props
     // this.audioReload(busyAudio)
-    const { talking, peer } = this.state
+    const { talking, peer, socket, touchScreenId } = this.state
     if (talking) {
       peer.destroy()
     } else {
-      this.handlePeerClose()
+      try {
+        socket.emit('hangup', touchScreenId)
+        this.handlePeerClose()
+      } catch (error) {
+        console.log('socket hangup emit', error)
+      }
     }
   }
 
@@ -129,6 +142,9 @@ export default class VideoCall extends PureComponent {
       this.setState(() => ({ theirVideoStream: stream }))
     })
 
+    // call.on('close', () => {
+    //   console.log('peer close')
+    // })
     call.on('close', this.handlePeerClose)
   };
 
@@ -144,19 +160,22 @@ export default class VideoCall extends PureComponent {
   }
 
   async handlePeerClose() {
+    // console.log('handlePeerClose')
     this.destroy()
-    setTimeout(() => {
-      this.props.onHangUp(true)
-    }, this.props.delayAfterDisConnect * 1000)
+    // setTimeout(() => {
+    this.props.onHangUp(true)
+    // }, this.props.delayAfterDisConnect * 1000)
   }
 
-  checkTalking = () => setTimeout(() => {
+  checkTalking = () => {
+    this.checkTalkingTimeOut = setTimeout(() => {
     // console.log('checkTalking')
-    const { talking, error } = this.state
-    if (talking) return
-    if (error) return
-    this.handleError('not-available')
-  }, this.props.delayAutoHangUp * 1000)
+      const { talking, error } = this.state
+      if (talking) return
+      if (error) return
+      this.handleError('not-available')
+    }, this.props.delayAutoHangUp * 1000)
+  }
 
   requestWebcam = () => {
     const mediaOptions = this.configMedia()
@@ -180,6 +199,10 @@ export default class VideoCall extends PureComponent {
 
       peer.on('open', (peerId) => {
 
+      })
+
+      peer.on('close', () => {
+        this.resetConnection()
       })
 
       peer.on('error', () => this.handleError('peer'))
@@ -209,6 +232,9 @@ export default class VideoCall extends PureComponent {
         }))
         this.checkTalking()
       })
+      socket.on('hangup', (id) => {
+        this.handlePeerClose()
+      })
     })
   }
 
@@ -226,6 +252,7 @@ export default class VideoCall extends PureComponent {
       if (nextProps.onlineStatus) {
         this.connectSocket()
       } else {
+        // console.log('socket disconnect')
         this.state.socket.disconnect()
         this.handlePeerClose()
       }
@@ -245,7 +272,7 @@ export default class VideoCall extends PureComponent {
     const myVideo = () => <video ref={c => { this.myVideoRef = c }} className='upper-video' src={myVideoUrl} muted autoPlay />
     const theirVideo = () => <video ref={c => { this.theirVideoRef = c }} className='lower-video' src={theirVideoUrl} autoPlay poster={profileImg} />
 
-    return (<div ref={c => { this.videoContainer = c }} className='video-call-container'>
+    return (<div ref={c => { this.videoContainer = c }} id='video-call-container' className='video-call-container'>
       {this.props.videoUI(myVideo, theirVideo, this.handleHangUp, this.handleAccept, inComingCall, talking)}
       <audio ref={c => { this.audioRef = c }} className='audio' loop autoPlay><source src={audio} type='audio/mpeg' /></audio>
     </div>)
