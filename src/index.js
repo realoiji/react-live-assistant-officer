@@ -63,15 +63,15 @@ export default class VideoCall extends PureComponent {
       myVideoStream: '',
       theirVideoStream: '',
       peer: null,
-      socket: null,
+      // socket: null,
       error: false,
       audio: '',
       touchScreenId: null,
       talking: false,
       inComingCall: false
     }))
-    if (this.props.onlineStatus) this.connectSocket()
     // setTimeout(() => {
+    // console.log('reload')
     this.props.onReload(true)
     // }, this.props.delayAfterDisConnect * 1000)
   }
@@ -80,12 +80,10 @@ export default class VideoCall extends PureComponent {
     const { myVideoStream, peer, socket } = this.state
     try {
       if (myVideoStream) myVideoStream.getTracks().forEach(mediaTrack => mediaTrack.stop())
-      if (socket) {
-        socket.emit('changestatus', 'ready')
-        socket.disconnect()
+      if (socket) socket.emit('changestatus', 'ready')
+      if (peer) {
+        peer.destroy()
       }
-      if (peer) peer.destroy()
-      // ipcRenderer.send('statusForWindow', 'hide')
       this.audioReload(busyAudio)
       if (this.checkTalkingTimeOut) {
         clearTimeout(this.checkTalkingTimeOut)
