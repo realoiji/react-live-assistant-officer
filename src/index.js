@@ -8,6 +8,7 @@ import busyAudio from '../audios/busy.mp3'
 import incomingAudio from '../audios/incoming.mp3'
 export default class VideoCall extends PureComponent {
   checkTalkingTimeOut = false
+  checkBusyAudioTimeOut = false
   static propTypes = {
     id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -85,6 +86,12 @@ export default class VideoCall extends PureComponent {
         peer.destroy()
       }
       this.audioReload(busyAudio)
+      if (this.checkBusyAudioTimeOut) {
+        clearTimeout(this.checkBusyAudioTimeOut)
+      }
+      this.checkBusyAudioTimeOut = setTimeout(() => {
+        this.audioReload('')
+      }, this.props.delayAfterDisConnect * 1000)
       if (this.checkTalkingTimeOut) {
         clearTimeout(this.checkTalkingTimeOut)
       }
