@@ -1,6 +1,6 @@
 {
   "name": "react-live-assistant-officer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "live assistant system for officer",
   "main": "lib/index.js",
   "scripts": {
