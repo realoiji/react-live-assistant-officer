@@ -171,9 +171,14 @@ export default class VideoCall extends PureComponent {
   checkTalking = () => {
     this.checkTalkingTimeOut = setTimeout(() => {
     // console.log('checkTalking')
-      const { talking, error } = this.state
+      const { talking, error, socket, touchScreenId } = this.state
       if (talking) return
       if (error) return
+      try {
+        socket.emit('hangup', touchScreenId)
+      } catch (error) {
+        console.log('socket hangup emit', error)
+      }
       this.handleError('not-available')
     }, this.props.delayAutoHangUp * 1000)
   }
