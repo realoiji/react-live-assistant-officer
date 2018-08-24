@@ -131,7 +131,9 @@ export default class VideoCall extends PureComponent {
   }
 
   calling = (call) => {
+    // console.log('calling calling calling', call);
     call.on('stream', (stream) => {
+      // console.log('stream stream stream')
       const { userData } = this.props
       const { socket, touchScreenId } = this.state
       try {
@@ -154,7 +156,9 @@ export default class VideoCall extends PureComponent {
 
   handleAccept = () => {
     const { talking, peer, touchScreenId, myVideoStream } = this.state
+    // console.log('handleAccept touchScreenId :', touchScreenId);
     if (!talking) {
+      // console.log('myVideoStream', myVideoStream);
       const call = peer.call(touchScreenId, myVideoStream)
       this.calling(call)
     }
@@ -211,8 +215,10 @@ export default class VideoCall extends PureComponent {
     // console.log('connectPeer')
     // debugger;
     try {
-      const { id, type, server } = this.props
-      const peerId = `${id}${type}`
+      const { userData, server } = this.props
+      const peerId = `${userData.id}${userData.type}`
+      // console.log('connect peer', peerId);
+
       const peer = new Peer(peerId, {
         host: server.ip,
         port: server.port,
@@ -292,7 +298,7 @@ export default class VideoCall extends PureComponent {
 
   componentDidMount() {
     const { onlineStatus, userData } = this.props
-    console.log('componentDidMount', userData)
+    // console.log('componentDidMount', userData)
     if (onlineStatus) this.connectSocket()
   }
 
